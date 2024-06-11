@@ -9,21 +9,30 @@ import UIKit
 
 class ListViewController: UIViewController {
     
-    
     @IBOutlet weak var tableView: UITableView!
     
     var drinks = Drinks()
     
-
+    var activityIndicator = UIActivityIndicatorView(style: .large)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
-        tableView.dataSource = self 
+        tableView.dataSource = self
         
-        drinks.getData {
+        activityIndicator.center = self.view.center
+        self.view.addSubview(activityIndicator)
+        
+        activityIndicator.startAnimating()
+        drinks.getData { error in
             DispatchQueue.main.async {
-                self.navigationItem.title = "Drinks ahown: \(self.drinks.drinkArray.count)"
-                self.tableView.reloadData()
+                self.activityIndicator.stopAnimating()
+                if let error = error {
+                    self.showAlert(title: "Erro", message: error)
+                } else {
+                    self.navigationItem.title = "Drinks: \(self.drinks.drinkArray.count)"
+                    self.tableView.reloadData()
+                }
             }
         }
     }
@@ -36,8 +45,13 @@ class ListViewController: UIViewController {
             
         }
     }
-
-}
+    
+    func showAlert(title: String, message: String) {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 
 extension ListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -45,13 +59,10 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = drinks.drinkArray[indexPath.row].strDrink
-        cell.detailTextLabel?.text = "-"
-        
-        return cell
-        
-
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+            cell.textLabel?.text = drinks.drinkArray[indexPath.row].strDrink
+            cell.detailTextLabel?.text = "-"
+            
+            return cell
+        }
     }
-
-}

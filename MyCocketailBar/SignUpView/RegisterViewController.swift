@@ -9,13 +9,15 @@ import UIKit
 import CoreData
 
 
-class RegisterViewController: UIViewController {
+class RegisterViewController: UIViewController,UITextFieldDelegate  {
     
     var name: String = ""
     var email: String = ""
     var password: String = ""
-    
     var dataController = DataController(modelName: "DataModel")
+    var originalSignUpButtonBottomConstant: CGFloat = 0
+    var signUpButtonBottomSpacing: CGFloat = 20
+    var originalSignUpButtonYPosition: CGFloat = 0
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
@@ -26,10 +28,45 @@ class RegisterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        passwordField.isSecureTextEntry = true
         
+        nameTextField.delegate = self
+        emailTextField.delegate = self
+        passwordField.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        view.addGestureRecognizer(tapGesture)
     }
     
+    deinit {
+        
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    
+    @objc func hideKeyboard() {
+        self.view.endEditing(true)
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+            return
+        }
+        let keyboardHeight = keyboardFrame.height
+        
+        signUpButton.frame.origin.y = view.frame.height - keyboardHeight - signUpButton.frame.height - signUpButtonBottomSpacing
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        signUpButton.frame.origin.y = originalSignUpButtonYPosition
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
     
     @IBAction func signUpButtonTapped(_ sender: Any) {
         guard let email = emailTextField.text, !email.isEmpty,
@@ -39,25 +76,19 @@ class RegisterViewController: UIViewController {
             return
         }
         saveUser(email: email, name: name, password: password)
-        
     }
-    
     
     func saveUser(email: String, name: String, password: String) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
-        
-        
         
         let user = User(context: managedContext)
         user.email = email
         user.name = name
         user.password = password
         
-        
         do {
             try managedContext.save()
-            
             navigationToListController()
         } catch {
             print("Could not save \(error)")

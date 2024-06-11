@@ -20,6 +20,7 @@
 		C2BC87712C1270E600BCE7BE /* Drink.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BC87702C1270E600BCE7BE /* Drink.swift */; };
 		C2E109B32C164D7C00062FE5 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C2E109B12C164D7C00062FE5 /* DataModel.xcdatamodeld */; };
 		C2E109B52C164DDD00062FE5 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E109B42C164DDD00062FE5 /* DataController.swift */; };
+		C2E109DB2C1859DE00062FE5 /* Returned.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E109DA2C1859DE00062FE5 /* Returned.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		C2BC87702C1270E600BCE7BE /* Drink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drink.swift; sourceTree = "<group>"; };
 		C2E109B22C164D7C00062FE5 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		C2E109B42C164DDD00062FE5 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		C2E109DA2C1859DE00062FE5 /* Returned.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Returned.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 			children = (
 				C2BC876E2C1263D900BCE7BE /* Drinks.swift */,
 				C2BC87702C1270E600BCE7BE /* Drink.swift */,
+				C2E109DA2C1859DE00062FE5 /* Returned.swift */,
 			);
 			path = DrinkModel;
 			sourceTree = "<group>";
@@ -203,6 +206,7 @@
 				C2BC875D2C1201D000BCE7BE /* ListViewController.swift in Sources */,
 				C2BC876F2C1263D900BCE7BE /* Drinks.swift in Sources */,
 				C22CC28C2C13AD700011EA2F /* RegisterViewController.swift in Sources */,
+				C2E109DB2C1859DE00062FE5 /* Returned.swift in Sources */,
 				C2BC87592C1201D000BCE7BE /* AppDelegate.swift in Sources */,
 				C2E109B52C164DDD00062FE5 /* DataController.swift in Sources */,
 				C2BC875B2C1201D000BCE7BE /* SceneDelegate.swift in Sources */,

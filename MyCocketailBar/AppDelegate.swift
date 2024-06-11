@@ -19,10 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let registerViewController = storyboard.instantiateViewController(withIdentifier: "RegisterViewController") as! RegisterViewController
-        registerViewController.dataController = dataController
+        // registerViewController.dataController = dataController
         
         let navigationController = UINavigationController(rootViewController: registerViewController)
         window?.rootViewController = navigationController

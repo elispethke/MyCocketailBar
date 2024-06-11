@@ -8,20 +8,16 @@
 import Foundation
 
 class Drinks {
-    struct Returned: Codable {
-        var drinks: [Drink]
-    }
-    
     let urlString = "https://www.thecocktaildb.com/api/json/v1/1/search.php?f=A"
     
     var drinkArray: [Drink] = []
     
-    func getData(completed: @escaping () -> ()) {
-        print("Estamos acessando a URL \(urlString)")
+    func getData(completed: @escaping (_ error: String?) -> ()) {
+        print("We are accessing the URL \(urlString)")
         
         guard let url = URL(string: urlString) else {
-            print("ERRO: Não foi possível criar uma URL a partir de \(urlString)")
-            completed()
+            print("ERRO: It was not possible to create a URL from \(urlString)")
+            completed("It was not possible to create a URL from \(urlString)")
             return
         }
         
@@ -30,24 +26,26 @@ class Drinks {
         let task = session.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("ERRO: \(error.localizedDescription)")
-                completed()
+                completed(error.localizedDescription)
                 return
             }
             
             do {
                 guard let data = data else {
-                    print("ERRO: Nenhum dado retornado")
-                    completed()
+                    print("ERRO: No data returned")
+                    completed("No data returned")
                     return
                 }
                 
                 let returned = try JSONDecoder().decode(Returned.self, from: data)
-                self.drinkArray = self.drinkArray + returned.drinks
+                self.drinkArray += returned.drinks
                 
             } catch {
                 print("ERRO: \(error.localizedDescription)")
+                completed(error.localizedDescription)
+                return
             }
-            completed()
+            completed(nil)
         }
         task.resume()
     }

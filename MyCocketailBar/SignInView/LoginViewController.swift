@@ -16,15 +16,15 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var textRegisterLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
-    
     @IBOutlet weak var registerButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         passwordTextField.isSecureTextEntry = true
-        
+        activityIndicator.hidesWhenStopped = true // Esconder quando parar de rodar
+        activityIndicator.stopAnimating()
     }
-    
     
     @IBAction func SignInButtonTapped(_ sender: Any) {
         
@@ -34,14 +34,24 @@ class LoginViewController: UIViewController {
             showAlert(message: "Please enter email and password.")
             return
         }
-        
-        if validateUser(email: email,password: password){
-            
-            navigateToListViewController()
-        } else {
-            showAlert(message: "Pleas register")
-        }
-    }
+        activityIndicator.startAnimating()
+                loginButton.isEnabled = false
+                
+                DispatchQueue.global(qos: .userInitiated).async {
+                    let isValidUser = self.validateUser(email: email, password: password)
+                    
+                    DispatchQueue.main.async {
+                        self.activityIndicator.stopAnimating() 
+                        self.loginButton.isEnabled = true
+                        
+                        if isValidUser {
+                            self.navigateToListViewController()
+                        } else {
+                            self.showAlert(message: "Please register")
+                        }
+                    }
+                }
+            }
     
     @IBAction func signUpButtontapped(_ sender: Any) {
         performSegue(withIdentifier: "ShowRegister", sender: self)
@@ -51,10 +61,8 @@ class LoginViewController: UIViewController {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return false }
         let managedContext = appDelegate.persistentContainer.viewContext
         
-        
         let fetchRequest = NSFetchRequest<User>(entityName: "User")
         fetchRequest.predicate = NSPredicate(format: "email == %@ AND password == %@", email, password)
-        
         
         do {
             let results = try managedContext.fetch(fetchRequest)
@@ -77,12 +85,9 @@ class LoginViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    
     private func navigateToListViewController() {
         performSegue(withIdentifier: "ShowList", sender: self)
     }
-    
-    
 }
 
 
