@@ -1,7 +1,7 @@
  # MYCOCKETAILBAR
 
 ### Elisangela Pethke iOS Project - Take Portfolio Project
-
+- Xcode 15.4
 - Technologies
 - Programming Language: Swift
 - Data Persistence: CoreData
