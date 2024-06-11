@@ -33,41 +33,34 @@ class RegisterViewController: UIViewController,UITextFieldDelegate  {
         emailTextField.delegate = self
         passwordField.delegate = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
-        view.addGestureRecognizer(tapGesture)
-    }
-    
-    deinit {
-        
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    
-    @objc func hideKeyboard() {
-        self.view.endEditing(true)
-    }
-    
-    @objc func keyboardWillShow(_ notification: Notification) {
-        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
-            return
-        }
-        let keyboardHeight = keyboardFrame.height
-        
-        signUpButton.frame.origin.y = view.frame.height - keyboardHeight - signUpButton.frame.height - signUpButtonBottomSpacing
-    }
-    
-    @objc func keyboardWillHide(_ notification: Notification) {
-        signUpButton.frame.origin.y = originalSignUpButtonYPosition
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
+        originalSignUpButtonYPosition = signUpButton.frame.origin.y
+
+               let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+               view.addGestureRecognizer(tapGesture)
+           }
+
+           deinit {
+               NotificationCenter.default.removeObserver(self)
+           }
+
+           @objc func hideKeyboard() {
+               self.view.endEditing(true)
+           }
+
+    internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+               textField.resignFirstResponder()
+               return true
+           }
+
+           @objc func keyboardWillShow(_ notification: Notification) {
+               // Não é necessário ajustar nada aqui
+           }
+
+           @objc func keyboardWillHide(_ notification: Notification) {
+               // Resetar a posição do botão de registro para a posição original
+               signUpButton.frame.origin.y = originalSignUpButtonYPosition
+           }
+       
     @IBAction func signUpButtonTapped(_ sender: Any) {
         guard let email = emailTextField.text, !email.isEmpty,
               let name = nameTextField.text, !name.isEmpty,

@@ -32,6 +32,7 @@ class DetailViewController: UIViewController {
         updateUserInterface()
     }
     
+    
     func updateUserInterface() {
         drinkLabel.text = drink?.strDrink
         alcoholLabel.text = drink?.strAlcoholic == "Alcoholic" ? "Yes" : "NO"
