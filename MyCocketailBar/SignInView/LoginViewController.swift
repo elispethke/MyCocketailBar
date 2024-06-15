@@ -24,7 +24,17 @@ class LoginViewController: UIViewController {
         passwordTextField.isSecureTextEntry = true
         activityIndicator.hidesWhenStopped = true // Esconder quando parar de rodar
         activityIndicator.stopAnimating()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+                view.addGestureRecognizer(tapGesture)
+        
+        
+            
     }
+    @objc func dismissKeyboard() {
+           view.endEditing(true)
+       }
+       
     
     @IBAction func SignInButtonTapped(_ sender: Any) {
         

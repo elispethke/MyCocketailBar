@@ -455,8 +455,9 @@ a pinch of salt and black pepper
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="74E-3k-bST"/>
         <segue reference="r6A-Oc-aMM"/>
-        <segue reference="1De-vz-E5T"/>
+        <segue reference="Tnb-p2-NC5"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="cadastro" width="3862" height="5408"/>

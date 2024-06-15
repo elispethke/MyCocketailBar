@@ -37,8 +37,9 @@ class RegisterViewController: UIViewController,UITextFieldDelegate  {
 
                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
                view.addGestureRecognizer(tapGesture)
+       
            }
-
+   
            deinit {
                NotificationCenter.default.removeObserver(self)
            }
